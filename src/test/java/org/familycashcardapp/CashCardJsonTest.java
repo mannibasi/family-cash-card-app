@@ -23,4 +23,15 @@ public class CashCardJsonTest {
         assertThat(json.write(cashCard)).extractingJsonPathNumberValue("@.amount").isEqualTo(123.45);
         assertThat(json.write(cashCard)).hasJsonPathNumberValue("@.amount");
     }
+
+    @Test
+    void cashCardDeserializationTest() throws IOException {
+        String content = """
+                {
+                  "id": 99,
+                  "amount": 123.45
+                }
+                """;
+        assertThat(json.parse(content)).isEqualTo(new CashCard(100L, 123.46));
+    }
 }
