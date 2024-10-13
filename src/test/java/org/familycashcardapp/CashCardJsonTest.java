@@ -33,5 +33,7 @@ public class CashCardJsonTest {
                 }
                 """;
         assertThat(json.parse(content)).isEqualTo(new CashCard(99L, 123.45));
+        assertThat(json.parseObject(content).id()).isEqualTo(99L);
+        assertThat(json.parseObject(content).amount()).isEqualTo(123.45);
     }
 }
