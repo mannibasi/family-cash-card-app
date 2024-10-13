@@ -1,4 +1,4 @@
 package org.familycashcardapp;
 
-public record CashCard(long id, double amount) {
+public record CashCard(Long id, Double amount) {
 }
