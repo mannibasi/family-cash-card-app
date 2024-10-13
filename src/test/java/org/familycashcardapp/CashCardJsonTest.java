@@ -3,6 +3,9 @@ package org.familycashcardapp;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
+import org.springframework.boot.test.json.JacksonTester;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,7 +15,7 @@ public class CashCardJsonTest {
     private JacksonTester<CashCard> json;
 
     @Test
-    void cashCardSerializationTest() {
+    void cashCardSerializationTest() throws IOException {
         CashCard cashCard = new CashCard(99L, 123.45);
         assertThat(json.write(cashCard)).isStrictlyEqualToJson("expected.json");
     }
