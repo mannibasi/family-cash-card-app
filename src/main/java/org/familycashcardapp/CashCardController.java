@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class CashCardController {
 
     @GetMapping("/{requestedId}")
-    private ResponseEntity<String> findById(){
-        return ResponseEntity.ok("{}");
+    private ResponseEntity<CashCard> findById(){
+        CashCard cashCard = new CashCard(1000L, 0.0);
+        return ResponseEntity.ok(cashCard);
     }
 }
