@@ -2,6 +2,7 @@ package org.familycashcardapp;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Optional;
@@ -26,7 +27,9 @@ public class CashCardController {
     }
 
     @PostMapping
-    private ResponseEntity<Void> create(@RequestBody CashCard cashCard) {
-        return ResponseEntity.created(URI.create("/what/should/go/here?")).build();
+    private ResponseEntity<Void> create(@RequestBody CashCard newCashCardRequest, UriComponentsBuilder uriComponentsBuilder) {
+        CashCard savedCashCard = cashCardRepository.save(newCashCardRequest);
+        URI locationOfNewCashCard = uriComponentsBuilder.path("/cashcards/{id}").buildAndExpand(savedCashCard.id()).toUri();
+        return ResponseEntity.created(locationOfNewCashCard).build();
     }
 }
