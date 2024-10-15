@@ -62,7 +62,7 @@ public class CashCardJsonTest {
         String content = """
                 [
                   { "id": 99, "amount": 123.45 },
-                  { "id": 100, "amount": 100.0 },
+                  { "id": 100, "amount": 1.0 },
                   { "id": 101, "amount": 150.0 }
                 ]
                 """;
