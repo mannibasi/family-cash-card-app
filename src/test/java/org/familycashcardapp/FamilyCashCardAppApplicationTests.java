@@ -69,7 +69,7 @@ class FamilyCashCardAppApplicationTests {
         assertThat(cashCardCount).isEqualTo(3);
 
         List<Integer> ids = documentContext.read("$..id");
-        assertThat(ids).containsExactlyInAnyOrder(99, 1, 101);
+        assertThat(ids).containsExactlyInAnyOrder(99, 100, 101);
 
         List<Double> amounts = documentContext.read("$..amount");
         assertThat(amounts).containsExactlyInAnyOrder(123.45, 100.0, 150.00);
