@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
@@ -75,6 +76,19 @@ class FamilyCashCardAppApplicationTests {
 
         List<Double> amounts = documentContext.read("$..amount");
         assertThat(amounts).containsExactlyInAnyOrder(123.45, 1.0, 150.00);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+
+    @Test
+    void shouldReturnAPageOfCashCards() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/cashcards?page=0&size=1", String.class);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+
+        List<?> page = documentContext.read("$[*]");
+        assertThat(page.size()).isEqualTo(1);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
