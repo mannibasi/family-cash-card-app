@@ -1,7 +1,10 @@
 package org.familycashcardapp;
 
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import org.assertj.core.api.ListAssert;
+import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,6 +63,16 @@ class FamilyCashCardAppApplicationTests {
     @Test
     void shouldReturnAllCashCardsWhenListIsRequested() {
         ResponseEntity<String> response = restTemplate.getForEntity("/cashcards", String.class);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        int cashCardCount = documentContext.read("$.length()");
+        assertThat(cashCardCount).isEqualTo(3);
+
+        List<Integer> ids = documentContext.read("$..id");
+        assertThat(ids).containsExactlyInAnyOrder(99, 1, 101);
+
+        List<Double> amounts = documentContext.read("$..amount");
+        assertThat(amounts).containsExactlyInAnyOrder(123.45, 100.0, 150.00);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
