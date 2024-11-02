@@ -51,13 +51,13 @@ class FamilyCashCardAppApplicationTests {
     @Test
     @DirtiesContext
     void shouldCreateANewCashCard() {
-        CashCard newCashCard = new CashCard(null, 250.00, "Manni");
+        CashCard newCashCard = new CashCard(null, 250.00, null);
         ResponseEntity<Void> createResponse = restTemplate.withBasicAuth("manni", "testUserPassword123!").postForEntity("/cashcards", newCashCard, Void.class);
 
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         URI locationOfNewCashCard = createResponse.getHeaders().getLocation();
-        ResponseEntity<String> getResponse = restTemplate.getForEntity(locationOfNewCashCard, String.class);
+        ResponseEntity<String> getResponse = restTemplate.withBasicAuth("manni", "testUserPassword123!").getForEntity(locationOfNewCashCard, String.class);
 
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
