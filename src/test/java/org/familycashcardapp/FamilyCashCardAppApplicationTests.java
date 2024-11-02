@@ -120,4 +120,16 @@ class FamilyCashCardAppApplicationTests {
         JSONArray amounts = documentContext.read("$..amount");
         assertThat(amounts).containsExactly(1.00, 123.45, 150.00);
     }
+
+    @Test
+    void shouldNotReturnACashCardWhenUsingBadPasswordCredentials() {
+        ResponseEntity<String> response = restTemplate.withBasicAuth("manni", "incorrectTestUserPassword123!").getForEntity("/cashcards/99", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
+    void shouldNotReturnACashCardWhenUsingBadUserCredentials() {
+        ResponseEntity<String> response = restTemplate.withBasicAuth("incorrectUser", "testUserPassword123!").getForEntity("/cashcards/99", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
 }
