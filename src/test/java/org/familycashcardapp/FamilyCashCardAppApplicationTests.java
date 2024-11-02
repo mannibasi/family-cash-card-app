@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.net.URI;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,6 +36,9 @@ class FamilyCashCardAppApplicationTests {
 
         Double amount = documentContext.read("$.amount");
         assertThat(amount).isEqualTo(123.45);
+
+        String owner = documentContext.read("$.owner");
+        assertThat(owner).isEqualTo("Manni");
     }
 
     @Test
@@ -49,7 +51,7 @@ class FamilyCashCardAppApplicationTests {
     @Test
     @DirtiesContext
     void shouldCreateANewCashCard() {
-        CashCard newCashCard = new CashCard(null, 250.00);
+        CashCard newCashCard = new CashCard(null, 250.00, "Manni");
         ResponseEntity<Void> createResponse = restTemplate.postForEntity("/cashcards", newCashCard, Void.class);
 
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -73,6 +75,9 @@ class FamilyCashCardAppApplicationTests {
 
         JSONArray amounts = documentContext.read("$..amount");
         assertThat(amounts).containsExactlyInAnyOrder(123.45, 1.0, 150.00);
+
+        JSONArray owners = documentContext.read("$..owner");
+        assertThat(owners).containsExactlyInAnyOrder("Manni", "Toni", "Trish");
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
