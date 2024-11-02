@@ -68,10 +68,10 @@ class FamilyCashCardAppApplicationTests {
         int cashCardCount = documentContext.read("$.length()");
         assertThat(cashCardCount).isEqualTo(3);
 
-        List<Integer> ids = documentContext.read("$..id");
+        JSONArray ids = documentContext.read("$..id");
         assertThat(ids).containsExactlyInAnyOrder(99, 100, 101);
 
-        List<Double> amounts = documentContext.read("$..amount");
+        JSONArray amounts = documentContext.read("$..amount");
         assertThat(amounts).containsExactlyInAnyOrder(123.45, 1.0, 150.00);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -84,7 +84,7 @@ class FamilyCashCardAppApplicationTests {
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
-        List<?> page = documentContext.read("$[*]");
+        JSONArray page = documentContext.read("$[*]");
         assertThat(page.size()).isEqualTo(1);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
