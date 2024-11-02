@@ -68,16 +68,16 @@ class FamilyCashCardAppApplicationTests {
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int cashCardCount = documentContext.read("$.length()");
-        assertThat(cashCardCount).isEqualTo(4);
+        assertThat(cashCardCount).isEqualTo(3);
 
         JSONArray ids = documentContext.read("$..id");
-        assertThat(ids).containsExactlyInAnyOrder(99, 100, 101, 102);
+        assertThat(ids).containsExactlyInAnyOrder(99, 100, 101);
 
         JSONArray amounts = documentContext.read("$..amount");
-        assertThat(amounts).containsExactlyInAnyOrder(123.45, 1.0, 150.00, 99.99);
+        assertThat(amounts).containsExactlyInAnyOrder(123.45, 1.0, 150.00);
 
         JSONArray owners = documentContext.read("$..owner");
-        assertThat(owners).containsExactlyInAnyOrder("Manni", "Toni", "Trish", "Dave");
+        assertThat(owners).containsExactlyInAnyOrder("Manni", "Manni", "Manni");
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
@@ -114,10 +114,10 @@ class FamilyCashCardAppApplicationTests {
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
         JSONArray read = documentContext.read("$[*]");
-        assertThat(read.size()).isEqualTo(4);
+        assertThat(read.size()).isEqualTo(3);
 
         JSONArray amounts = documentContext.read("$..amount");
-        assertThat(amounts).containsExactly(1.00, 99.99, 123.45, 150.00);
+        assertThat(amounts).containsExactly(1.00, 123.45, 150.00);
     }
 
     @Test
