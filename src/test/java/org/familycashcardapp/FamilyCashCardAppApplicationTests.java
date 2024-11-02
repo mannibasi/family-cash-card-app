@@ -68,20 +68,19 @@ class FamilyCashCardAppApplicationTests {
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int cashCardCount = documentContext.read("$.length()");
-        assertThat(cashCardCount).isEqualTo(3);
+        assertThat(cashCardCount).isEqualTo(4);
 
         JSONArray ids = documentContext.read("$..id");
-        assertThat(ids).containsExactlyInAnyOrder(99, 100, 101);
+        assertThat(ids).containsExactlyInAnyOrder(99, 100, 101, 102);
 
         JSONArray amounts = documentContext.read("$..amount");
-        assertThat(amounts).containsExactlyInAnyOrder(123.45, 1.0, 150.00);
+        assertThat(amounts).containsExactlyInAnyOrder(123.45, 1.0, 150.00, 99.99);
 
         JSONArray owners = documentContext.read("$..owner");
-        assertThat(owners).containsExactlyInAnyOrder("Manni", "Toni", "Trish");
+        assertThat(owners).containsExactlyInAnyOrder("Manni", "Toni", "Trish", "Dave");
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
-
 
     @Test
     void shouldReturnAPageOfCashCards() {
@@ -115,10 +114,10 @@ class FamilyCashCardAppApplicationTests {
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
         JSONArray read = documentContext.read("$[*]");
-        assertThat(read.size()).isEqualTo(3);
+        assertThat(read.size()).isEqualTo(4);
 
         JSONArray amounts = documentContext.read("$..amount");
-        assertThat(amounts).containsExactly(1.00, 123.45, 150.00);
+        assertThat(amounts).containsExactly(1.00, 99.99, 123.45, 150.00);
     }
 
     @Test
@@ -137,5 +136,12 @@ class FamilyCashCardAppApplicationTests {
     void shouldRejectUsersWhoAreNotCardOwners() {
         ResponseEntity<String> response = restTemplate.withBasicAuth("Hank", "someOtherTestUserPassword123!").getForEntity("/cashcards/99", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void shouldNotAllowAccessToCashCardsTheyDoNotOwn() {
+        //102 is owned by Dave
+        ResponseEntity<String> response = restTemplate.withBasicAuth("Manni", "testUserPassword123!").getForEntity("/cashcards/102", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }
