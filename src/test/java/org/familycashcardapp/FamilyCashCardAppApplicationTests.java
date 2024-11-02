@@ -27,7 +27,7 @@ class FamilyCashCardAppApplicationTests {
 
     @Test
     void shouldReturnACashCardWhenDataIsSaved() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/cashcards/99", String.class);
+        ResponseEntity<String> response = restTemplate.withBasicAuth("manni", "testUserPassword123!").getForEntity("/cashcards/99", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -52,7 +52,7 @@ class FamilyCashCardAppApplicationTests {
     @DirtiesContext
     void shouldCreateANewCashCard() {
         CashCard newCashCard = new CashCard(null, 250.00, "Manni");
-        ResponseEntity<Void> createResponse = restTemplate.postForEntity("/cashcards", newCashCard, Void.class);
+        ResponseEntity<Void> createResponse = restTemplate.withBasicAuth("manni", "testUserPassword123!").postForEntity("/cashcards", newCashCard, Void.class);
 
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -64,7 +64,7 @@ class FamilyCashCardAppApplicationTests {
 
     @Test
     void shouldReturnAllCashCardsWhenListIsRequested() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/cashcards", String.class);
+        ResponseEntity<String> response = restTemplate.withBasicAuth("manni", "testUserPassword123!").getForEntity("/cashcards", String.class);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int cashCardCount = documentContext.read("$.length()");
@@ -85,7 +85,7 @@ class FamilyCashCardAppApplicationTests {
 
     @Test
     void shouldReturnAPageOfCashCards() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/cashcards?page=0&size=1", String.class);
+        ResponseEntity<String> response = restTemplate.withBasicAuth("manni", "testUserPassword123!").getForEntity("/cashcards?page=0&size=1", String.class);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
@@ -97,7 +97,7 @@ class FamilyCashCardAppApplicationTests {
 
     @Test
     void shouldReturnASortedPageOfCashCards() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/cashcards?page=0&size=1&sort=amount,desc", String.class);
+        ResponseEntity<String> response = restTemplate.withBasicAuth("manni", "testUserPassword123!").getForEntity("/cashcards?page=0&size=1&sort=amount,desc", String.class);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
@@ -110,7 +110,7 @@ class FamilyCashCardAppApplicationTests {
 
     @Test
     void shouldReturnASortedPageOfCashCardsWithNoParametersAndUseDefaultValues() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/cashcards", String.class);
+        ResponseEntity<String> response = restTemplate.withBasicAuth("manni", "testUserPassword123!").getForEntity("/cashcards", String.class);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
