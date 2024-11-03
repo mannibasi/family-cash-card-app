@@ -164,4 +164,12 @@ class FamilyCashCardAppApplicationTests {
         assertThat(id).isEqualTo(99);
         assertThat(amount).isEqualTo(249.95);
     }
+
+    @Test
+    void shouldReturnNotFoundWhenUpdatingNonExistentCashCard() {
+        CashCard unknownCashCardUpdate = new CashCard(null, 123.45, null);
+        HttpEntity<CashCard> request = new HttpEntity<>(unknownCashCardUpdate);
+        ResponseEntity<Void> response = restTemplate.withBasicAuth("manni", "testUserPassword123!").exchange("/cashcards/1000", HttpMethod.PUT, request, Void.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
 }
