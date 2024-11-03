@@ -51,4 +51,9 @@ public class CashCardController {
         return ResponseEntity.ok(page.getContent());
     }
 
+    @PutMapping("/{requestedId}")
+    private ResponseEntity<Void> update(@PathVariable Long requestedId, @RequestBody CashCard cashCardUpdate) {
+        return ResponseEntity.noContent().build();
+    }
+
 }
