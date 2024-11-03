@@ -201,5 +201,8 @@ class FamilyCashCardAppApplicationTests {
     void shouldNotDeleteACashCardThatIsOwnedBySomeoneElse() {
         ResponseEntity<Void> response = restTemplate.withBasicAuth("manni", "testUserPassword123!").exchange("/cashcards/102", HttpMethod.DELETE, null, Void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+        ResponseEntity<String> getResponse = restTemplate.withBasicAuth("dave", "testAnotherUserPassword123!").getForEntity("/cashcards/102", String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }

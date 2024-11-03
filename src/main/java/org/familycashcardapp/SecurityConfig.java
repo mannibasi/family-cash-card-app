@@ -39,12 +39,18 @@ class SecurityConfig {
                 .roles("CARD-OWNER")
                 .build();
 
+        UserDetails dave = users
+                .username("Dave")
+                .password(passwordEncoder.encode("testAnotherUserPassword123!"))
+                .roles("CARD-OWNER")
+                .build();
+
         UserDetails hank = users.
                 username("Hank")
                 .password(passwordEncoder.encode("someOtherTestUserPassword123!"))
                 .roles("NON-OWNER")
                 .build();
 
-        return new InMemoryUserDetailsManager(manni, hank);
+        return new InMemoryUserDetailsManager(manni, hank, dave);
     }
 }
