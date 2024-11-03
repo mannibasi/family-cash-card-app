@@ -1,4 +1,4 @@
-# family-cash-card-app
+# family-cash-card-app ![CI](https://github.com/mannibasi/family-cash-card-app/actions/workflows/maven.yml/badge.svg)
 REST API with Spring Boot
 
 A simple Family Cash Card application — a modern way for parents to manage allowance funds for their children.
