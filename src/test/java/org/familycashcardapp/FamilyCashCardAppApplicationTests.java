@@ -172,4 +172,12 @@ class FamilyCashCardAppApplicationTests {
         ResponseEntity<Void> response = restTemplate.withBasicAuth("manni", "testUserPassword123!").exchange("/cashcards/1000", HttpMethod.PUT, request, Void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+
+    @Test
+    void shouldNotUpdateACashCardThatIsOwnedBySomeoneElse() {
+        CashCard davesCard = new CashCard(null, 12.34, null);
+        HttpEntity<CashCard> request = new HttpEntity<>(davesCard);
+        ResponseEntity<Void> response = restTemplate.withBasicAuth("manni", "testUserPassword123!").exchange("/cashcards/102", HttpMethod.PUT, request, Void.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
 }
